@@ -58,6 +58,16 @@
 						<input type="text" class="form-control" name="name" id="name"
 							   placeholder="Enter new team name" required>
 					</div>
+                    <div class="form-group">
+                        <label for="squadron">Squadron Name</label>
+                        <input type="text" class="form-control" name="squadron" id="squadron"
+                               placeholder="Enter new squadron name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="flight">Flight Name</label>
+                        <input type="text" class="form-control" name="flight" id="flight"
+                               placeholder="Enter new flight name" required>
+                    </div>
 					<div class="form-group">
 						<label for="email">Email</label>
 						<input type="email" class="form-control" name="email" id="email"
@@ -119,7 +129,9 @@
 					<div class="form-group col-md-2">
 						<label for="sel1" class="sr-only" >Search Field</label>
 						<select name="field" class="form-control w-100" id="sel1">
-							<option value="name" {% if field == 'name' %}selected{% endif %}>Name</option>
+                            <option value="name" {% if field == 'name' %}selected{% endif %}>Name</option>
+                            <option value="squadon" {% if field == 'squadon' %}selected{% endif %}>Squadron</option>
+                            <option value="flight" {% if field == 'flight' %}selected{% endif %}>Flight</option>
 							<option value="id" {% if field == 'id' %}selected{% endif %}>ID</option>
 							<option value="email" {% if field == 'email' %}selected{% endif %}>Email</option>
 							<option value="affiliation" {% if field == 'affiliation' %}selected{% endif %}>Affiliation</option>
@@ -145,6 +157,10 @@
 						</td>
 						<td class="text-center"><b>Team</b>
 						</td>
+                        <td class="text-center"><b>Squadron</b>
+                        </td>
+                        <td class="text-center"><b>Flight</b>
+                        </td>
 						<td class="d-none d-md-table-cell d-lg-table-cell text-center"><b>Email</b>
 						</td>
 						<td class="d-none"><b>Website</b>
@@ -169,6 +185,8 @@
 						<td class="team-id" value="{{ team.id }}">{{ team.id }}</td>
 						<td class="team-name" value="{{ team.name }}"><a href="{{ request.script_root }}/admin/team/{{ team.id }}">{{ team.name | truncate(32) }}</a>
 						</td>
+                        <td class="team-squadron" value="{{ team.squadron }}">{{ team.squadron }}</td>
+                        <td class="team-flight" value="{{ team.flight }}">{{ team.flight }}</td>
 						<td class="team-email d-none d-md-table-cell d-lg-table-cell" value="{{ team.email }}">{{ team.email | truncate(32) }}</td>
 						<td class="team-website d-none text-center">
 							{% if team.website %}

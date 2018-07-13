@@ -27,6 +27,18 @@
 					<input class="form-control" type="text" name="name" id="name-input" {% if name %}value="{{ name }}"{% endif %} />
 				</div>
 				<div class="form-group">
+					<label for="name-input">
+						Squdron Name
+					</label>
+					<input class="form-control" type="text" name="squadron" id="squadron-input" {% if squadron %}value="{{ squadron }}"{% endif %} />
+				</div>
+				<div class="form-group">
+					<label for="name-input">
+						Flight Name
+					</label>
+					<input class="form-control" type="text" name="flight" id="flight-input" {% if flight %}value="{{ flight }}"{% endif %} />
+				</div>
+				<div class="form-group">
 					<label for="email-input">
 						Email
 					</label>

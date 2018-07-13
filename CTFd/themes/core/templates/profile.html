@@ -49,6 +49,18 @@
 					<input class="form-control" type="text" name="name" id="name-input" value="{{name}}"/>
 				</div>
 				<div class="form-group">
+					<label for="squadron-input">
+						Squadron Name
+					</label>
+					<input class="form-control" type="text" name="squadron" id="squadron-input" value="{{squadron}}"/>
+				</div>
+				<div class="form-group">
+					<label for="flight-input">
+						Flight Name
+					</label>
+					<input class="form-control" type="text" name="flight" id="flight-input" value="{{flight}}"/>
+				</div>
+				<div class="form-group">
 					<label for="email-input">
 						Email
 					</label>
@@ -65,28 +77,7 @@
 						New Password
 					</label>
 					<input class="form-control" type="password" name="password" id="password-input" />
-				</div>
-
-				<hr>
-
-				<div class="form-group">
-					<label for="affiliation-input">
-						Affiliation
-					</label>
-					<input class="form-control" type="text" name="affiliation" id="affiliation-input" value="{% if affiliation %}{{affiliation}}{% endif %}" />
-				</div>
-				<div class="form-group">
-					<label for="website-input">
-						Website
-					</label>
-					<input class="form-control" type="text" name="website" id="website-input" value="{% if website %}{{website}}{% endif %}" />
-				</div>
-				<div class="form-group">
-					<label for="country-input">
-						Country
-					</label>
-					<input class="form-control" type="text" name="country" id="country-input" value="{% if country %}{{country}}{% endif %}" />
-				</div>
+				</div>				
 				<div class="form-group">
 					<button type="submit" id="submit" tabindex="5" class="btn btn-md btn-primary btn-outlined float-right">Submit</button>
 				</div>
