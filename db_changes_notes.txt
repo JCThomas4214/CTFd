@@ -1,0 +1,30 @@
+// show the databases
+show databases;
+
+// use a database
+use [database];
+
+//show all tables in DB
+show tables;
+
+//show table schema
+show columns from [table];
+
+//alter table
+alter table [table] add column [column] [column definition];
+alter table [table] drop column [column];
+
+/*
+/
+/   CTFd changes
+/
+*/
+
+// drop website, affiliation, and country from 'teams' table
+alter table teams drop column website;
+alter table teams drop column affiliation;
+alter table teams drop column country;
+
+// add squadron, and flight columns to 'teams' table
+alter table teams add column squadron varchar(32);
+alter table teams add column flight varchar(32);

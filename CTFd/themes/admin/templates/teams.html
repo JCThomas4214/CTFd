@@ -115,12 +115,10 @@
 						<label for="sel1" class="sr-only" >Search Field</label>
 						<select name="field" class="form-control w-100" id="sel1">
                             <option value="name" {% if field == 'name' %}selected{% endif %}>Name</option>
-                            <option value="squadon" {% if field == 'squadon' %}selected{% endif %}>Squadron</option>
+                            <option value="squadron" {% if field == 'squadron' %}selected{% endif %}>Squadron</option>
                             <option value="flight" {% if field == 'flight' %}selected{% endif %}>Flight</option>
 							<option value="id" {% if field == 'id' %}selected{% endif %}>ID</option>
 							<option value="email" {% if field == 'email' %}selected{% endif %}>Email</option>
-							<option value="affiliation" {% if field == 'affiliation' %}selected{% endif %}>Affiliation</option>
-							<option value="country" {% if field == 'country' %}selected{% endif %}>Country</option>
 					  </select>
 					</div>
 					<div class="form-group col-md-8">
@@ -166,21 +164,7 @@
 						</td>
                         <td class="team-squadron" value="{{ team.squadron }}">{{ team.squadron }}</td>
                         <td class="team-flight" value="{{ team.flight }}">{{ team.flight }}</td>
-						<td class="team-email d-none d-md-table-cell d-lg-table-cell" value="{{ team.email }}">{{ team.email | truncate(32) }}</td>
-						<td class="team-website d-none text-center">
-							{% if team.website %}
-								<a href="{{ team.website }}" target="_blank">
-									<i class="btn-fa fas fa-external-link-alt" data-toggle="tooltip" data-placement="top"
-									   title="{{ team.website }}" aria-hidden="true"></i>
-								</a>
-							{% endif %}
-						</td>
-						<td class="team-affiliation d-none" value="{{ team.affiliation if team.affiliation is not none }}">
-							<span>{% if team.affiliation %}{{ team.affiliation | truncate(20) }}{% endif %}</span>
-						</td>
-						<td class="team-country d-none" value="{{ team.country if team.country is not none }}">
-							<span>{% if team.country %}{{ team.country }}{% endif %}</span>
-						</td>
+						<td class="team-email d-none d-md-table-cell d-lg-table-cell" value="{{ team.email }}">{{ team.email }}</td>
 						<td class="team-admin d-none d-md-table-cell d-lg-table-cell text-center" value="{{ team.admin }}">
 							{% if team.admin %}
 								<span class="badge badge-primary">admin</span>
@@ -240,15 +224,14 @@
 <script>
 var nonce = "{{ nonce }}";
 
-function load_update_modal(id, name, email, website, affiliation, country, admin, verified, hidden){
+function load_update_modal(id, name, squadron, flight, email, admin, verified, hidden){
 	var modal_form = $('#update-user-modal form');
 
-	modal_form.find('input[name=name]').val(name);
+    modal_form.find('input[name=name]').val(name);
+    modal_form.find('input[name=squadron]').val(squadron);
+    modal_form.find('input[name=flight]').val(flight);
 	modal_form.find('input[name=id]').val(id);
 	modal_form.find('input[name=email]').val(email);
-	modal_form.find('input[name=website]').val(website);
-	modal_form.find('input[name=affiliation]').val(affiliation);
-	modal_form.find('input[name=country]').val(country);
 	modal_form.find('input[name=password]').val('');
 
     modal_form.find('input[name=admin]').prop('checked', admin);
@@ -328,20 +311,19 @@ $(document).ready(function () {
         var elem = $(this).parent().parent().parent();
         var id = elem.find('.team-id').attr('value') || '';
         var name = elem.find('.team-name').attr('value') || '';
+        var squadron = elem.find('.team-squadron').attr('value') || '';
+        var flight = elem.find('.team-flight').attr('value') || '';
         var email = elem.find('.team-email').attr('value') || '';
-        var website = elem.find('.team-website > a').attr('href') || '';
-        var affiliation = elem.find('.team-affiliation').attr('value') || '';
-        var country = elem.find('.team-country').attr('value') || '';
 
         var admin = elem.find('.team-admin').attr('value') == 'True' || false;
 		var verified = elem.find('.team-verified').attr('value') == 'True' || false;
 		var hidden = elem.find('.team-hidden').attr('value') == 'True' || false;
 
-        load_update_modal(id, name, email, website, affiliation, country, admin, verified, hidden);
+        load_update_modal(id, name, squadron, flight, email, admin, verified, hidden);
     });
 
     $('.create-team').click(function () {
-        load_update_modal('new', '', '', '', '', '', false, false, false);
+        load_update_modal('new', '', '', '', '', false, false, false);
     });
 
     $('.delete-team').click(function () {

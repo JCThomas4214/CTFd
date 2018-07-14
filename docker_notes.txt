@@ -1,0 +1,17 @@
+//show docker image
+docker images
+
+//show running containers
+docker ps
+
+//note: images create containers they are not running processes
+
+//execute command in running container (use docker ps for container_id)
+docker exec -it [container_id] [COMMAND]
+
+//examples
+docker exec -it [container_id] ls
+docker exec -it [container_id] /bin/bash
+
+//remove everything from docker (start fresh)
+docker system prune -a

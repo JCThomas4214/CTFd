@@ -21,6 +21,7 @@ table > thead > tr > td {
 
 .table td, .table th {
     vertical-align: inherit;
+    text-align: center;
 }
 
 pre {
