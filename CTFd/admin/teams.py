@@ -28,12 +28,11 @@ def admin_teams_view(page):
                 errors.append('Your ID search term is not numeric')
         elif field == 'name':
             teams = Teams.query.filter(Teams.name.like('%{}%'.format(q))).order_by(Teams.id.asc()).all()
-        elif field == 'email':
-            teams = Teams.query.filter(Teams.email.like('%{}%'.format(q))).order_by(Teams.id.asc()).all()
-        elif field == 'affiliation':
-            teams = Teams.query.filter(Teams.affiliation.like('%{}%'.format(q))).order_by(Teams.id.asc()).all()
-        elif field == 'country':
-            teams = Teams.query.filter(Teams.country.like('%{}%'.format(q))).order_by(Teams.id.asc()).all()
+        elif field == 'squadron':
+            teams = Teams.query.filter(Teams.squadron.like('%{}%'.format(q))).order_by(Teams.id.asc()).all()
+        elif field == 'flight':
+            teams = Teams.query.filter(Teams.flight.like('%{}%'.format(q))).order_by(Teams.id.asc()).all()
+
         return render_template('admin/teams.html', teams=teams, pages=None, curr_page=None, q=q, field=field)
 
     page = abs(int(page))
@@ -42,6 +41,8 @@ def admin_teams_view(page):
     page_end = results_per_page * (page - 1) + results_per_page
 
     teams = Teams.query.order_by(Teams.id.asc()).slice(page_start, page_end).all()
+    print("this is before the print")
+    print(teams[0])
     count = db.session.query(db.func.count(Teams.id)).first()[0]
     pages = int(count / results_per_page) + (count % results_per_page > 0)
     return render_template('admin/teams.html', teams=teams, pages=pages, curr_page=page)
@@ -51,11 +52,10 @@ def admin_teams_view(page):
 @admins_only
 def admin_create_team():
     name = request.form.get('name', None)
+    squadron = request.form.get('squadron', None)
+    flight = request.form.get('flight', None)
     password = request.form.get('password', None)
     email = request.form.get('email', None)
-    website = request.form.get('website', None)
-    affiliation = request.form.get('affiliation', None)
-    country = request.form.get('country', None)
 
     admin_user = True if request.form.get('admin', None) == 'on' else False
     verified = True if request.form.get('verified', None) == 'on' else False
@@ -67,6 +67,11 @@ def admin_create_team():
         errors.append('The team requires a name')
     elif Teams.query.filter(Teams.name == name).first():
         errors.append('That name is taken')
+
+    if not squadron:
+        errors.append('The team requires a squadron')
+    if not flight:
+        errors.append('The team requires a flight')
 
     if utils.check_email_format(name) is True:
         errors.append('Team name cannot be an email address')
@@ -84,22 +89,18 @@ def admin_create_team():
     if not password:
         errors.append('The team requires a password')
 
-    if website and (website.startswith('http://') or website.startswith('https://')) is False:
-        errors.append('Websites must start with http:// or https://')
-
     if errors:
         db.session.close()
         return jsonify({'data': errors})
 
     team = Teams(name, email, password)
-    team.website = website
-    team.affiliation = affiliation
-    team.country = country
+    team.squadron = squadron
+    team.flight = flight
 
     team.admin = admin_user
     team.verified = verified
     team.hidden = hidden
-
+    print(team.squadron, team.flight)
     db.session.add(team)
     db.session.commit()
     db.session.close()
@@ -128,11 +129,10 @@ def admin_team(teamid):
                                place=place, wrong_keys=wrong_keys, awards=awards)
     elif request.method == 'POST':
         name = request.form.get('name', None)
+        squadron = request.form.get('squadron', None)
+        flight = request.form.get('flight', None)
         password = request.form.get('password', None)
         email = request.form.get('email', None)
-        website = request.form.get('website', None)
-        affiliation = request.form.get('affiliation', None)
-        country = request.form.get('country', None)
 
         admin_user = True if request.form.get('admin', None) == 'on' else False
         verified = True if request.form.get('verified', None) == 'on' else False
@@ -156,9 +156,6 @@ def admin_team(teamid):
         if email_used and int(email_used.id) != int(teamid):
             errors.append('That email is taken')
 
-        if website and (website.startswith('http://') or website.startswith('https://')) is False:
-            errors.append('Websites must start with http:// or https://')
-
         if errors:
             db.session.close()
             return jsonify({'data': errors})
@@ -168,9 +165,8 @@ def admin_team(teamid):
                 user.email = email
             if password:
                 user.password = bcrypt_sha256.encrypt(password)
-            user.website = website
-            user.affiliation = affiliation
-            user.country = country
+            user.squadron = squadron
+            user.flight = flight
             user.admin = admin_user
             user.verified = verified
             user.banned = hidden
