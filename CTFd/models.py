@@ -157,17 +157,16 @@ class Teams(db.Model):
     flight = db.Column(db.String(32))
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
-    website = db.Column(db.String(128))
-    affiliation = db.Column(db.String(128))
-    country = db.Column(db.String(32))
     bracket = db.Column(db.String(32))
     banned = db.Column(db.Boolean, default=False)
     verified = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
     joined = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    def __init__(self, name, email, password):
+    def __init__(self, name, squadron, flight, email, password):
         self.name = name
+        self.squadron = squadron
+        self.flight = flight
         self.email = email
         self.password = bcrypt_sha256.encrypt(str(password))
 

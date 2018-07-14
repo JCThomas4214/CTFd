@@ -41,8 +41,6 @@ def admin_teams_view(page):
     page_end = results_per_page * (page - 1) + results_per_page
 
     teams = Teams.query.order_by(Teams.id.asc()).slice(page_start, page_end).all()
-    print("this is before the print")
-    print(teams[0])
     count = db.session.query(db.func.count(Teams.id)).first()[0]
     pages = int(count / results_per_page) + (count % results_per_page > 0)
     return render_template('admin/teams.html', teams=teams, pages=pages, curr_page=page)
@@ -93,14 +91,11 @@ def admin_create_team():
         db.session.close()
         return jsonify({'data': errors})
 
-    team = Teams(name, email, password)
-    team.squadron = squadron
-    team.flight = flight
+    team = Teams(name, squadron, flight, email, password)
 
     team.admin = admin_user
     team.verified = verified
     team.hidden = hidden
-    print(team.squadron, team.flight)
     db.session.add(team)
     db.session.commit()
     db.session.close()

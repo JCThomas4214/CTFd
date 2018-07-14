@@ -142,6 +142,8 @@ def register():
     if request.method == 'POST':
         errors = []
         name = request.form['name']
+        squadron = request.form['squadron']
+        flight = request.form['flight']
         email = request.form['email']
         password = request.form['password']
 
@@ -169,10 +171,10 @@ def register():
             errors.append('Pick a longer team name')
 
         if len(errors) > 0:
-            return render_template('register.html', errors=errors, name=request.form['name'], email=request.form['email'], password=request.form['password'])
+            return render_template('register.html', errors=errors, name=request.form['name'], squadron=request.form['squadron'], flight=request.form['flight'], email=request.form['email'], password=request.form['password'])
         else:
             with app.app_context():
-                team = Teams(name, email.lower(), password)
+                team = Teams(name, squadron, flight, email.lower(), password)
                 db.session.add(team)
                 db.session.commit()
                 db.session.flush()

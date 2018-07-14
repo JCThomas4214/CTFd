@@ -32,7 +32,7 @@ def setup():
             name = request.form['name']
             email = request.form['email']
             password = request.form['password']
-            admin = Teams(name, email, password)
+            admin = Teams(name, '', '', email, password)
             admin.admin = True
             admin.banned = True
 
@@ -219,10 +219,9 @@ def profile():
             errors = []
 
             name = request.form.get('name').strip()
+            squadron = request.form.get('squadron').strip()
+            flight = request.form.get('flight').strip()
             email = request.form.get('email').strip()
-            website = request.form.get('website').strip()
-            affiliation = request.form.get('affiliation').strip()
-            country = request.form.get('country').strip()
 
             user = Teams.query.filter_by(id=session['id']).first()
 
@@ -247,12 +246,9 @@ def profile():
                 errors.append('That email has already been used')
             if not utils.get_config('prevent_name_change') and name_len:
                 errors.append('Pick a longer team name')
-            if website.strip() and not utils.validate_url(website):
-                errors.append("That doesn't look like a valid URL")
 
             if len(errors) > 0:
-                return render_template('profile.html', name=name, email=email, website=website,
-                                       affiliation=affiliation, country=country, errors=errors)
+                return render_template('profile.html', name=name, squadron=squadron, flight=flight, email=email, errors=errors)
             else:
                 team = Teams.query.filter_by(id=session['id']).first()
                 if team.name != name:
@@ -266,23 +262,20 @@ def profile():
 
                 if 'password' in request.form.keys() and not len(request.form['password']) == 0:
                     team.password = bcrypt_sha256.encrypt(request.form.get('password'))
-                team.website = website
-                team.affiliation = affiliation
-                team.country = country
+                team.squadron = squadron
+                team.flight = flight
                 db.session.commit()
                 db.session.close()
                 return redirect(url_for('views.profile'))
         else:
             user = Teams.query.filter_by(id=session['id']).first()
             name = user.name
+            squadron = user.squadron
+            flight = user.flight
             email = user.email
-            website = user.website
-            affiliation = user.affiliation
-            country = user.country
             prevent_name_change = utils.get_config('prevent_name_change')
             confirm_email = utils.get_config('verify_emails') and not user.verified
-            return render_template('profile.html', name=name, email=email, website=website, affiliation=affiliation,
-                                   country=country, prevent_name_change=prevent_name_change, confirm_email=confirm_email)
+            return render_template('profile.html', name=name, squadron=squadron, flight=flight, email=email, prevent_name_change=prevent_name_change, confirm_email=confirm_email)
     else:
         return redirect(url_for('auth.login'))
 
