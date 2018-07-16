@@ -106,7 +106,7 @@ def sum_cat(data, index):
         if item[index] not in used:
             items.append((item[index], item[index+1], sum([tmp[4] for tmp in data if tmp[index] == item[index]])))
             used.append(item[index])
-    return sorted(items, key=lambda tup: tup[1], reverse=True)
+    return sorted(items, key=lambda tup: tup[2], reverse=True)
 
 @scoreboard.route('/scoreboard')
 @scoreboard.route('/scoreboard/teams')
