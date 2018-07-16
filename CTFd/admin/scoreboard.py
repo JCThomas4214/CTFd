@@ -7,13 +7,24 @@ from CTFd import utils
 
 admin_scoreboard = Blueprint('admin_scoreboard', __name__)
 
-
 @admin_scoreboard.route('/admin/scoreboard')
+@admin_scoreboard.route('/admin/scoreboard/teams')
 @admins_only
-def admin_scoreboard_view():
+def admin_scoreboard_view_teams():
     standings = get_standings(admin=True)
-    return render_template('admin/scoreboard.html', teams=standings)
+    return render_template('admin/scoreboard_teams.html', teams=standings)
 
+@admin_scoreboard.route('/admin/scoreboard/flights')
+@admins_only
+def admin_scoreboard_view_flights():
+    standings = get_standings(admin=True)
+    return render_template('admin/scoreboard_flights.html', teams=standings)
+
+@admin_scoreboard.route('/admin/scoreboard/squadrons')
+@admins_only
+def admin_scoreboard_view_squadrons():
+    standings = get_standings(admin=True)
+    return render_template('admin/scoreboard_squadrons.html', teams=standings)
 
 @admin_scoreboard.route('/admin/scores')
 @admins_only

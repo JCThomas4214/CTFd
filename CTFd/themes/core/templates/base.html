@@ -70,8 +70,14 @@
 						</li>
 					{% endif %}
 					{% if not hide_scores() %}
-						<li class="nav-item">
-							<a class="nav-link" href="{{ request.script_root }}/scoreboard">Scoreboard</a>
+						<li class="nav-item dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+							   aria-haspopup="true" aria-expanded="true">Scoreboard</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="{{ request.script_root }}/scoreboard/teams">Teams</a>
+								<a class="dropdown-item" href="{{ request.script_root }}/scoreboard/flights">Flights</a>
+								<a class="dropdown-item" href="{{ request.script_root }}/scoreboard/squadrons">Squadrons</a>
+							</div>
 						</li>
 					{% endif %}
 					<li class="nav-item">

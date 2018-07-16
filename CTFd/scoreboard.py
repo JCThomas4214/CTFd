@@ -71,6 +71,8 @@ def get_standings(admin=False, count=None):
         standings_query = db.session.query(
             Teams.id.label('teamid'),
             Teams.name.label('name'),
+            Teams.flight.label('flight'),
+            Teams.squadron.label('squadron'),
             Teams.banned, sumscores.columns.score
         )\
             .join(sumscores, Teams.id == sumscores.columns.teamid) \
@@ -79,6 +81,8 @@ def get_standings(admin=False, count=None):
         standings_query = db.session.query(
             Teams.id.label('teamid'),
             Teams.name.label('name'),
+            Teams.flight.label('flight'),
+            Teams.squadron.label('squadron'),
             sumscores.columns.score
         )\
             .join(sumscores, Teams.id == sumscores.columns.teamid) \
@@ -96,16 +100,41 @@ def get_standings(admin=False, count=None):
 
     return standings
 
+def sum_cat(data, index):
+    used, items = [], []
+    for item in data:
+        if item[index] not in used:
+            items.append((item[index], item[index+1], sum([tmp[4] for tmp in data if tmp[index] == item[index]])))
+            used.append(item[index])
+    return sorted(items, key=lambda tup: tup[1], reverse=True)
 
 @scoreboard.route('/scoreboard')
-def scoreboard_view():
+@scoreboard.route('/scoreboard/teams')
+def scoreboard_view_teams():
     if utils.get_config('view_scoreboard_if_authed') and not utils.authed():
         return redirect(url_for('auth.login', next=request.path))
     if utils.hide_scores():
-        return render_template('scoreboard.html', errors=['Scores are currently hidden'])
+        return render_template('scoreboard_teams.html', errors=['Scores are currently hidden'])
     standings = get_standings()
-    return render_template('scoreboard.html', teams=standings, score_frozen=utils.is_scoreboard_frozen())
+    return render_template('scoreboard_teams.html', teams=standings, score_frozen=utils.is_scoreboard_frozen())
 
+@scoreboard.route('/scoreboard/flights')
+def scoreboard_view_flights():
+    if utils.get_config('view_scoreboard_if_authed') and not utils.authed():
+        return redirect(url_for('auth.login', next=request.path))
+    if utils.hide_scores():
+        return render_template('scoreboard_flights.html', errors=['Scores are currently hidden'])
+    standings = get_standings()
+    return render_template('scoreboard_flights.html', flights=sum_cat(standings, 2), score_frozen=utils.is_scoreboard_frozen())
+
+@scoreboard.route('/scoreboard/squadrons')
+def scoreboard_view_squadrons():
+    if utils.get_config('view_scoreboard_if_authed') and not utils.authed():
+        return redirect(url_for('auth.login', next=request.path))
+    if utils.hide_scores():
+        return render_template('scoreboard_squadrons.html', errors=['Scores are currently hidden'])
+    standings = get_standings()
+    return render_template('scoreboard_squadrons.html', squadrons=sum_cat(standings, 3), score_frozen=utils.is_scoreboard_frozen())
 
 @scoreboard.route('/scores')
 def scores():
