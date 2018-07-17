@@ -196,7 +196,7 @@ def ban(teamid):
     user.banned = True
     db.session.commit()
     db.session.close()
-    return redirect(url_for('admin_scoreboard.admin_scoreboard_view'))
+    return redirect(url_for('admin_scoreboard.admin_scoreboard_view_teams'))
 
 
 @admin_teams.route('/admin/team/<int:teamid>/unban', methods=['POST'])
@@ -206,7 +206,7 @@ def unban(teamid):
     user.banned = False
     db.session.commit()
     db.session.close()
-    return redirect(url_for('admin_scoreboard.admin_scoreboard_view'))
+    return redirect(url_for('admin_scoreboard.admin_scoreboard_view_teams'))
 
 
 @admin_teams.route('/admin/team/<int:teamid>/delete', methods=['POST'])

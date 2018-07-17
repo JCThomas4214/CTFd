@@ -100,11 +100,12 @@ def get_standings(admin=False, count=None):
 
     return standings
 
-def sum_cat(data, index):
+def sum_cat(data, index, admin=False):
     used, items = [], []
     for item in data:
         if item[index] not in used:
-            items.append((item[index], item[index+1], sum([tmp[4] for tmp in data if tmp[index] == item[index]])))
+            print(item)
+            items.append((item[index], item[index+1], sum([tmp[5 if admin else 4] for tmp in data if tmp[index] == item[index]])))
             used.append(item[index])
     return sorted(items, key=lambda tup: tup[2], reverse=True)
 
