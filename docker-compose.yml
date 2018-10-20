@@ -5,7 +5,7 @@ services:
     build: .
     restart: always
     ports:
-      - "8000:8000"
+      - "10.1.111.90:80:8000"
     environment:
       - UPLOAD_FOLDER=/var/uploads
       - LOG_FOLDER=/var/log/CTFd
@@ -47,4 +47,4 @@ services:
 networks:
     default:
     internal:
-        internal: true
+      internal: true
