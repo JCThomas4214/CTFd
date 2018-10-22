@@ -60,6 +60,8 @@ def upgrade():
     sa.Column('affiliation', sa.String(length=128), nullable=True),
     sa.Column('country', sa.String(length=32), nullable=True),
     sa.Column('bracket', sa.String(length=32), nullable=True),
+    sa.Column('squadron', sa.String(length=32), nullable=True),
+    sa.Column('flight', sa.String(length=32), nullable=True),
     sa.Column('banned', sa.Boolean(), nullable=True),
     sa.Column('verified', sa.Boolean(), nullable=True),
     sa.Column('admin', sa.Boolean(), nullable=True),
