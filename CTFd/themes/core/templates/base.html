@@ -36,7 +36,8 @@
 		<div class="container">
 			<a href="{{ request.script_root }}/" class="navbar-brand">
 				{% if ctf_logo() %}
-				<img class="img-responsive ctf_logo" src="{{ request.script_root }}/files/{{ ctf_logo() }}" height="25" alt="{{ ctf_name() }}">
+				<img class="img-responsive ctf_logo" src="{{ request.script_root }}/files/{{ ctf_logo() }}" height="28" alt="{{ ctf_name() }}">
+				{{ ctf_name() }}
 				{% else %}
 				{{ ctf_name() }}
 				{% endif %}

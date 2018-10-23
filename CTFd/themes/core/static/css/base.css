@@ -19,6 +19,11 @@ table > thead > tr > td {
     border-top: none !important;
 }
 
+.ctf_logo {
+    margin-right: 8px;
+    margin-bottom: 2px;
+}
+
 #score-graph {
     height: 450px;
     display: block;
@@ -38,7 +43,7 @@ table > thead > tr > td {
 }
 
 .jumbotron {
-    background-color: #343a40;
+    background-color: #000000;
     color: #FFF;
     border-radius: 0;
     text-align: center;
